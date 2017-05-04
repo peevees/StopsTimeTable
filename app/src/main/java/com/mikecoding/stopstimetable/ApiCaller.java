@@ -23,6 +23,8 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
     private ProgressBar progressBar;
     private ArrayList<Station> stationList;
     private Station station;
+    private Information information;
+    private String key;
 
     /*
     public GetAdressTask(ProgressBar progressBar) {
@@ -31,6 +33,10 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
 
     }
     */
+
+    public ApiCaller(String key) {
+        this.key = key;
+    }
 
     @Override
     protected void onPreExecute() {
@@ -75,27 +81,56 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
     protected void onPostExecute(JSONObject result) {
         super.onPostExecute(result);
 
-        if (result != null) {
+        //Hantering för API Hållplatser
+        //Skapar station objekt av JSON datan och sätter in dessa i en ArrayList
+        if (key.equals("4cfa136f50c14cb1bad7a91d84ce14f8")) {
 
-            stationList = new ArrayList<>();
+            if (result != null) {
 
-            try {
-                JSONArray jArray = result.getJSONArray("ResponseData");
+                stationList = new ArrayList<>();
 
-                for (int i = 0; i < jArray.length(); i++) {
+                try {
+                    JSONArray jArray = result.getJSONArray("ResponseData");
 
-                    station = new Station();
-                    station.setName(jArray.getJSONObject(i).getString("Name"));
-                    station.setSiteID(jArray.getJSONObject(i).getString("SiteId"));
+                    for (int i = 0; i < jArray.length(); i++) {
 
-                    Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
+                        station = new Station();
+                        station.setName(jArray.getJSONObject(i).getString("Name"));
+                        station.setSiteID(jArray.getJSONObject(i).getString("SiteId"));
+                        stationList.add(station);
+
+                        Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+        }
+        //Hantering för API 2 Realtidsinformation
+        else {
 
+            if (result != null) {
+
+                try {
+
+                    JSONObject object = result.getJSONObject("ResponseData");
+                    JSONArray jArray2 = object.getJSONArray("Metros");
+
+                    information = new Information();
+
+                    information.setGroupOfLine(jArray2.getJSONObject(0).getString("GroupOfLine"));
+
+                    Log.d("Test", "onPostExecute: " + information.getGroupOfLine());
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
     }
 
