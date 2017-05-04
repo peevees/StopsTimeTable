@@ -12,7 +12,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         String location = "södra";
+        //här sätts url till ApiCaller(). key=%s = String API_KEY searchstring=%s = String location
         String url = String.format("http://api.sl.se/api2/typeahead.json?key=%s&searchstring=%s&stationsonly=true", API_KEY, location);
 
         new ApiCaller().execute(url);
