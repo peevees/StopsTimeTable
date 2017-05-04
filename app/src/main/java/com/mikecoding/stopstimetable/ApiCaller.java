@@ -1,8 +1,8 @@
 package com.mikecoding.stopstimetable;
 
 import android.os.AsyncTask;
+import android.support.annotation.Keep;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,19 +20,11 @@ import java.util.ArrayList;
 
 public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
 
-    private ProgressBar progressBar;
     private ArrayList<Station> stationList;
+    private ArrayList<Information> informationList;
     private Station station;
     private Information information;
     private String key;
-
-    /*
-    public GetAdressTask(ProgressBar progressBar) {
-
-        this.progressBar = progressBar;
-
-    }
-    */
 
     public ApiCaller(String key) {
         this.key = key;
@@ -66,11 +58,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
                 return new JSONObject(server_response);
             }
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
 
@@ -114,16 +102,55 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
 
             if (result != null) {
 
+                informationList = new ArrayList<>();
+
                 try {
 
                     JSONObject object = result.getJSONObject("ResponseData");
-                    JSONArray jArray2 = object.getJSONArray("Metros");
+                    JSONArray jMetrosArray = object.getJSONArray("Metros");
+                    JSONArray jBusesArray = object.getJSONArray("Buses");
+                    JSONArray jTrainsArray = object.getJSONArray("Trains");
 
-                    information = new Information();
+                    //Handle Metros
+                    if (jMetrosArray != null) {
 
-                    information.setGroupOfLine(jArray2.getJSONObject(0).getString("GroupOfLine"));
+                        for (int i = 0; i < jMetrosArray.length(); i++) {
 
-                    Log.d("Test", "onPostExecute: " + information.getGroupOfLine());
+                            information = new Information();
+                            information.setGroupOfLine(jMetrosArray.getJSONObject(i).getString("GroupOfLine"));
+                            information.setDisplayTime(jMetrosArray.getJSONObject(i).getString("DisplayTime"));
+                            information.setLineNumber(jMetrosArray.getJSONObject(i).getString("LineNumber"));
+                            information.setTransportMode(jMetrosArray.getJSONObject(i).getString("TransportMode"));
+                            information.setDestination(jMetrosArray.getJSONObject(i).getString("Destination"));
+                            informationList.add(information);
+
+                        }
+
+                    }
+
+                    //Handle Buses
+                    if (jBusesArray != null) {
+
+                        for (int i= 0; i < jBusesArray.length(); i++) {
+
+                            information = new Information();
+                            information.setGroupOfLine(jBusesArray.getJSONObject(i).getString("GroupOfLine"));
+                            information.setDisplayTime(jBusesArray.getJSONObject(i).getString("DisplayTime"));
+                            information.setLineNumber(jBusesArray.getJSONObject(i).getString("LineNumber"));
+                            information.setTransportMode(jBusesArray.getJSONObject(i).getString("TransportMode"));
+                            information.setDestination(jBusesArray.getJSONObject(i).getString("Destination"));
+                            informationList.add(information);
+
+                        }
+
+                    }
+
+                    //Logg output JSON Datan vi fått in
+                    for (int i = 0; i < informationList.size(); i++) {
+                        Log.d("Realtidsinformation: ", "" + informationList.get(i).getDisplayTime()
+                        + ", " + informationList.get(i).getGroupOfLine() + " " + informationList.get(i).getLineNumber()
+                        + " mot " + informationList.get(i).getDestination());
+                    }
 
 
                 } catch (JSONException e) {
