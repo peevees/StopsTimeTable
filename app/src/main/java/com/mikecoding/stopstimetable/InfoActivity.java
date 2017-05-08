@@ -22,10 +22,11 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        //TODO Ta in id strängen som skickas via intent från MainActivity och sätt in den här i url för apiCaller();
+        //TODO Fixa så att användaren kan ange tidsram för sökning
 
         siteId = getIntent().getExtras().getString("ID");
         String url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=5", API_KEY, siteId);
+        new ApiCaller(this, API_KEY).execute(url);
 
         lv_info = (ListView) findViewById(R.id.listview_information);
 

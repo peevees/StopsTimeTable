@@ -1,6 +1,5 @@
 package com.mikecoding.stopstimetable;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,10 +24,15 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
     private Information information;
     private String key;
     private ApiInterface apiInterface;
+    private InformationInterface informationInterface;
 
     public ApiCaller(ApiInterface context, String key) {
         this.key = key;
         this.apiInterface = context;
+    }
+    public ApiCaller(InformationInterface context, String key) {
+        this.key = key;
+        this.informationInterface = context;
     }
 
     @Override
@@ -132,7 +136,11 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
                         for (int i= 0; i < jBusesArray.length(); i++) {
                             information = new Information();
-                            information.setGroupOfLine(jBusesArray.getJSONObject(i).getString("GroupOfLine"));
+                            if (jBusesArray.getJSONObject(i).getString("GroupOfLine").equals("blåbuss")) {
+                                information.setGroupOfLine(jBusesArray.getJSONObject(i).getString("GroupOfLine"));
+                            } else {
+                                information.setGroupOfLine("buss");
+                            }
                             information.setDisplayTime(jBusesArray.getJSONObject(i).getString("DisplayTime"));
                             information.setLineNumber(jBusesArray.getJSONObject(i).getString("LineNumber"));
                             information.setTransportMode(jBusesArray.getJSONObject(i).getString("TransportMode"));
@@ -148,7 +156,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
                         for (int i = 0; i < jTrainsArray.length(); i++) {
                             information = new Information();
-                            information.setGroupOfLine(jTrainsArray.getJSONObject(i).getString("GroupOfLine"));
+                            information.setGroupOfLine("pendeltåg");
                             information.setDisplayTime(jTrainsArray.getJSONObject(i).getString("DisplayTime"));
                             information.setLineNumber(jTrainsArray.getJSONObject(i).getString("LineNumber"));
                             information.setTransportMode(jTrainsArray.getJSONObject(i).getString("TransportMode"));
@@ -158,7 +166,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
                     }
 
-
+                    informationInterface.onTaskComplete(informationList);
 
                     //Logg output JSON Datan vi fått in
                     for (int i = 0; i < informationList.size(); i++) {
