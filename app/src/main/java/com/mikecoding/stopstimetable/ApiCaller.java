@@ -1,7 +1,6 @@
 package com.mikecoding.stopstimetable;
 
 import android.os.AsyncTask;
-import android.support.annotation.Keep;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -157,12 +155,16 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
 
                     }
 
+
+
                     //Logg output JSON Datan vi fått in
                     for (int i = 0; i < informationList.size(); i++) {
                         Log.d("Realtidsinformation: ", "" + informationList.get(i).getDisplayTime()
                         + ", " + informationList.get(i).getGroupOfLine() + " " + informationList.get(i).getLineNumber()
                         + " mot " + informationList.get(i).getDestination());
                     }
+
+
 
 
                 } catch (JSONException e) {
