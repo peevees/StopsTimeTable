@@ -1,5 +1,6 @@
 package com.mikecoding.stopstimetable;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.Keep;
 import android.util.Log;
@@ -18,16 +19,18 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
+public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
     private ArrayList<Station> stationList;
     private ArrayList<Information> informationList;
     private Station station;
     private Information information;
     private String key;
+    private ApiInterface apiInterface;
 
-    public ApiCaller(String key) {
+    public ApiCaller(ApiInterface context, String key) {
         this.key = key;
+        this.apiInterface = context;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
 
                         Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
                     }
-
+                    apiInterface.onTaskComplete(stationList);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
