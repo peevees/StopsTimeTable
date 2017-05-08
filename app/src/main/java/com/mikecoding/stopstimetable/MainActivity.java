@@ -2,6 +2,11 @@ package com.mikecoding.stopstimetable;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -9,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String API_KEY = "4cfa136f50c14cb1bad7a91d84ce14f8";
     //SL Realtidsinformation
     private static final String API_KEY2 = "2bf817b6d911437790124c982f80df7b";
+
+    ListView StationList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
