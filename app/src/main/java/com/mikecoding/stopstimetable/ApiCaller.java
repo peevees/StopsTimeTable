@@ -115,7 +115,6 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
                     if (jMetrosArray != null) {
 
                         for (int i = 0; i < jMetrosArray.length(); i++) {
-
                             information = new Information();
                             information.setGroupOfLine(jMetrosArray.getJSONObject(i).getString("GroupOfLine"));
                             information.setDisplayTime(jMetrosArray.getJSONObject(i).getString("DisplayTime"));
@@ -123,7 +122,6 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
                             information.setTransportMode(jMetrosArray.getJSONObject(i).getString("TransportMode"));
                             information.setDestination(jMetrosArray.getJSONObject(i).getString("Destination"));
                             informationList.add(information);
-
                         }
 
                     }
@@ -132,7 +130,6 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
                     if (jBusesArray != null) {
 
                         for (int i= 0; i < jBusesArray.length(); i++) {
-
                             information = new Information();
                             information.setGroupOfLine(jBusesArray.getJSONObject(i).getString("GroupOfLine"));
                             information.setDisplayTime(jBusesArray.getJSONObject(i).getString("DisplayTime"));
@@ -140,7 +137,22 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject> {
                             information.setTransportMode(jBusesArray.getJSONObject(i).getString("TransportMode"));
                             information.setDestination(jBusesArray.getJSONObject(i).getString("Destination"));
                             informationList.add(information);
+                        }
 
+                    }
+
+                    //Handle Trains
+
+                    if (jTrainsArray != null) {
+
+                        for (int i = 0; i < jTrainsArray.length(); i++) {
+                            information = new Information();
+                            information.setGroupOfLine(jTrainsArray.getJSONObject(i).getString("GroupOfLine"));
+                            information.setDisplayTime(jTrainsArray.getJSONObject(i).getString("DisplayTime"));
+                            information.setLineNumber(jTrainsArray.getJSONObject(i).getString("LineNumber"));
+                            information.setTransportMode(jTrainsArray.getJSONObject(i).getString("TransportMode"));
+                            information.setDestination(jTrainsArray.getJSONObject(i).getString("Destination"));
+                            informationList.add(information);
                         }
 
                     }
