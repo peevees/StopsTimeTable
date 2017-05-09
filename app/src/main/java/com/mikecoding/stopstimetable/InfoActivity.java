@@ -23,7 +23,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         //TODO Fixa så att användaren kan ange tidsram för sökning
-
+        //TODO fixa informationslistitem xml lite
         siteId = getIntent().getExtras().getString("ID");
         String url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=5", API_KEY, siteId);
         new ApiCaller(this, API_KEY).execute(url);
