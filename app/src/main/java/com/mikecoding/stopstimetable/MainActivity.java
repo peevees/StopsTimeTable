@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     }
     public void searchStations(View view){
        url = createURL(inputText.getText().toString());
-        new ApiCaller(this, API_KEY).execute(url);
+        new ApiCaller(this).execute(url);
     }
     private String createURL (String location){
         String urlCreation;
