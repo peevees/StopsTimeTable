@@ -11,5 +11,11 @@
         android:layout_height="match_parent">
 
     </ListView>
+    <ProgressBar
+        android:id="@+id/info_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"/>
 
 </RelativeLayout>

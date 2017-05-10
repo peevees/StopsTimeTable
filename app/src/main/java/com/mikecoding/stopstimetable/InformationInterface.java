@@ -8,4 +8,5 @@ import java.util.ArrayList;
 
 public interface InformationInterface {
     public void onTaskComplete(ArrayList<Information> informations);
+    void hideProgressBar();
 }

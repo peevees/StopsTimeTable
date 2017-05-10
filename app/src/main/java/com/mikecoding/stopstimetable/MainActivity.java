@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     EditText inputText;
     String url;
     ArrayList<Station> stations;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         setContentView(R.layout.activity_main);
         list = (ListView) findViewById(R.id.scroll_list);
         inputText = (EditText) findViewById(R.id.input_text);
+        progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
 
         String location = "södra";
         //här sätts url till ApiCaller(). key=%s = String API_KEY searchstring=%s = String location
@@ -61,5 +64,15 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         this.stations = stations;
         StationAdapter adapter = new StationAdapter(this, R.layout.stationlistitem, stations);
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
     }
 }

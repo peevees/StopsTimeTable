@@ -38,8 +38,10 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if (apiInterface != null) {
+            apiInterface.showProgressBar();
+        }
 
-        //progressdialog kod här
     }
 
     @Override
@@ -94,6 +96,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
                         Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
                     }
+                    apiInterface.hideProgressBar();
                     apiInterface.onTaskComplete(stationList);
 
                 } catch (JSONException e) {
@@ -166,6 +169,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
                     }
 
+                    informationInterface.hideProgressBar();
                     informationInterface.onTaskComplete(informationList);
 
                     //Logg output JSON Datan vi fått in
