@@ -5,10 +5,19 @@
     android:layout_height="match_parent"
     tools:context="com.mikecoding.stopstimetable.InfoActivity">
 
+    <TextView
+        android:id="@+id/last_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_above="@id/listview_information"
+        android:text="Last updated: "/>
     <ListView
         android:id="@+id/listview_information"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stop_holder">
+
     </ListView>
     <ProgressBar
         android:id="@+id/info_progressbar"
