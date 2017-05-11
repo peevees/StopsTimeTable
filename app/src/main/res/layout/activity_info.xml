@@ -5,10 +5,32 @@
     android:layout_height="match_parent"
     tools:context="com.mikecoding.stopstimetable.InfoActivity">
 
+    <RelativeLayout
+        android:id="@+id/stop_holder"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        >
+        <TextView
+            android:id="@+id/stop_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="26sp"
+            android:text="DUMMY STOP"/>
+
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/last_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_above="@id/listview_information"
+        android:text="Last updated: "/>
     <ListView
         android:id="@+id/listview_information"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/stop_holder">
 
     </ListView>
     <ProgressBar
