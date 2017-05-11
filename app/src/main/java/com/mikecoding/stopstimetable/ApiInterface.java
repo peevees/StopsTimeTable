@@ -3,7 +3,8 @@ package com.mikecoding.stopstimetable;
 import java.util.ArrayList;
 
 public interface ApiInterface {
-    public void onTaskComplete(ArrayList<Station> stations);
+    void onTaskComplete(ArrayList<Station> stations);
     void showProgressBar();
     void hideProgressBar();
+    void displayToast(String msg);
 }

@@ -86,7 +86,6 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
         super.onPostExecute(result);
         Log.d("test", "onPostExecute: ");
 
-
         if (apiInterface != null) {
             jsonHandler = new JSONHandler(apiInterface, result);
             jsonHandler.parseStations();

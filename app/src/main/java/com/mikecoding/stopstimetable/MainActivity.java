@@ -1,6 +1,5 @@
 package com.mikecoding.stopstimetable;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +9,9 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ApiInterface {
 
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     String url;
     ArrayList<Station> stations;
     ProgressBar progressBar;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -74,5 +74,13 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
+    }
+    @Override
+    public void displayToast(String msg) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+        toast.show();
     }
 }

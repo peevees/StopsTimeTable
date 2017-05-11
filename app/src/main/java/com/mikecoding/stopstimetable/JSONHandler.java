@@ -58,6 +58,9 @@ public class JSONHandler {
                 e.printStackTrace();
             }
 
+        } else {
+            apiInterface.hideProgressBar();
+            apiInterface.displayToast("There is no internet connection available");
         }
 
      }
