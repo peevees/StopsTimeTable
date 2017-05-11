@@ -3,7 +3,6 @@ package com.mikecoding.stopstimetable;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,34 +11,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.util.ArrayList;
 
 
 public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
 
-    private ArrayList<Station> stationList;
-    private ArrayList<Information> informationList;
-    private Station station;
-    private Information information;
-    private String key;
+    private JSONHandler jsonHandler;
     private ApiInterface apiInterface;
     private InformationInterface informationInterface;
 
-    public ApiCaller(ApiInterface context, String key) {
-        this.key = key;
+    public ApiCaller(ApiInterface context) {
         this.apiInterface = context;
     }
-    public ApiCaller(InformationInterface context, String key) {
-        this.key = key;
+    public ApiCaller(InformationInterface context) {
         this.informationInterface = context;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if (apiInterface != null) {
+            apiInterface.showProgressBar();
+        }
 
-        //progressdialog kod här
     }
 
     @Override
@@ -50,9 +45,14 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
         URL url;
         HttpURLConnection urlConnection = null;
 
+
+        Log.d("Test", "doInBackground: ");
         try {
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(3000);
+            urlConnection.setReadTimeout(3000);
+
 
             int responseCode = urlConnection.getResponseCode();
 
@@ -61,10 +61,21 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
                 Log.d("Server response", server_response);
 
                 return new JSONObject(server_response);
+            } else {
+
+                urlConnection.disconnect();
             }
 
-        } catch (JSONException | IOException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
+        } catch (SocketTimeoutException e) {
+            Log.d("Test", "doInBackground: sockettimeout");
+            e.printStackTrace();
+
+        } catch (IOException e) {
+            Log.d("TEST", "doInBackground: ioexception");
+            e.printStackTrace();
+            return null;
         }
 
         return null;
@@ -73,116 +84,14 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
     @Override
     protected void onPostExecute(JSONObject result) {
         super.onPostExecute(result);
+        Log.d("test", "onPostExecute: ");
 
-        //Hantering för API Hållplatser
-        //Skapar station objekt av JSON datan och sätter in dessa i en ArrayList
-        if (key.equals("4cfa136f50c14cb1bad7a91d84ce14f8")) {
-
-            if (result != null) {
-
-                stationList = new ArrayList<>();
-
-                try {
-                    JSONArray jArray = result.getJSONArray("ResponseData");
-
-                    for (int i = 0; i < jArray.length(); i++) {
-
-                        station = new Station();
-                        station.setName(jArray.getJSONObject(i).getString("Name"));
-                        station.setSiteID(jArray.getJSONObject(i).getString("SiteId"));
-                        stationList.add(station);
-
-                        Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
-                    }
-                    apiInterface.onTaskComplete(stationList);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
-        //Hantering för API 2 Realtidsinformation
-        else {
-
-            if (result != null) {
-
-                informationList = new ArrayList<>();
-
-                try {
-
-                    JSONObject object = result.getJSONObject("ResponseData");
-                    JSONArray jMetrosArray = object.getJSONArray("Metros");
-                    JSONArray jBusesArray = object.getJSONArray("Buses");
-                    JSONArray jTrainsArray = object.getJSONArray("Trains");
-
-                    //Handle Metros
-                    if (jMetrosArray != null) {
-
-                        for (int i = 0; i < jMetrosArray.length(); i++) {
-                            information = new Information();
-                            information.setGroupOfLine(jMetrosArray.getJSONObject(i).getString("GroupOfLine"));
-                            information.setDisplayTime(jMetrosArray.getJSONObject(i).getString("DisplayTime"));
-                            information.setLineNumber(jMetrosArray.getJSONObject(i).getString("LineNumber"));
-                            information.setTransportMode(jMetrosArray.getJSONObject(i).getString("TransportMode"));
-                            information.setDestination(jMetrosArray.getJSONObject(i).getString("Destination"));
-                            informationList.add(information);
-                        }
-
-                    }
-
-                    //Handle Buses
-                    if (jBusesArray != null) {
-
-                        for (int i= 0; i < jBusesArray.length(); i++) {
-                            information = new Information();
-                            if (jBusesArray.getJSONObject(i).getString("GroupOfLine").equals("blåbuss")) {
-                                information.setGroupOfLine(jBusesArray.getJSONObject(i).getString("GroupOfLine"));
-                            } else {
-                                information.setGroupOfLine("buss");
-                            }
-                            information.setDisplayTime(jBusesArray.getJSONObject(i).getString("DisplayTime"));
-                            information.setLineNumber(jBusesArray.getJSONObject(i).getString("LineNumber"));
-                            information.setTransportMode(jBusesArray.getJSONObject(i).getString("TransportMode"));
-                            information.setDestination(jBusesArray.getJSONObject(i).getString("Destination"));
-                            informationList.add(information);
-                        }
-
-                    }
-
-                    //Handle Trains
-
-                    if (jTrainsArray != null) {
-
-                        for (int i = 0; i < jTrainsArray.length(); i++) {
-                            information = new Information();
-                            information.setGroupOfLine("pendeltåg");
-                            information.setDisplayTime(jTrainsArray.getJSONObject(i).getString("DisplayTime"));
-                            information.setLineNumber(jTrainsArray.getJSONObject(i).getString("LineNumber"));
-                            information.setTransportMode(jTrainsArray.getJSONObject(i).getString("TransportMode"));
-                            information.setDestination(jTrainsArray.getJSONObject(i).getString("Destination"));
-                            informationList.add(information);
-                        }
-
-                    }
-
-                    informationInterface.onTaskComplete(informationList);
-
-                    //Logg output JSON Datan vi fått in
-                    for (int i = 0; i < informationList.size(); i++) {
-                        Log.d("Realtidsinformation: ", "" + informationList.get(i).getDisplayTime()
-                        + ", " + informationList.get(i).getGroupOfLine() + " " + informationList.get(i).getLineNumber()
-                        + " mot " + informationList.get(i).getDestination());
-                    }
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
+        if (apiInterface != null) {
+            jsonHandler = new JSONHandler(apiInterface, result);
+            jsonHandler.parseStations();
+        } else {
+            jsonHandler = new JSONHandler(informationInterface, result);
+            jsonHandler.parseInformation();
         }
     }
 
@@ -202,6 +111,7 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
                 try {
                     reader.close();
                 } catch (IOException e) {
+                    Log.d("TEST", "readStream: ");
                     e.printStackTrace();
                 }
             }

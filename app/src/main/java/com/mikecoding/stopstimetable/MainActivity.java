@@ -1,6 +1,5 @@
 package com.mikecoding.stopstimetable;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,9 +8,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ApiInterface {
 
@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     EditText inputText;
     String url;
     ArrayList<Station> stations;
+    ProgressBar progressBar;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         setContentView(R.layout.activity_main);
         list = (ListView) findViewById(R.id.scroll_list);
         inputText = (EditText) findViewById(R.id.input_text);
+        progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
 
         String location = "södra";
         //här sätts url till ApiCaller(). key=%s = String API_KEY searchstring=%s = String location
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     }
     public void searchStations(View view){
        url = createURL(inputText.getText().toString());
-        new ApiCaller(this, API_KEY).execute(url);
+        new ApiCaller(this).execute(url);
     }
     private String createURL (String location){
         String urlCreation;
@@ -61,5 +64,23 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         this.stations = stations;
         StationAdapter adapter = new StationAdapter(this, R.layout.stationlistitem, stations);
         list.setAdapter(adapter);
+    }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        progressBar.setVisibility(View.GONE);
+    }
+    @Override
+    public void displayToast(String msg) {
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
+        toast.show();
     }
 }
