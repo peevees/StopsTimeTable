@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">Stops Timetable</string>
-    <string name="button_search">Search</string>
-    <string name="hint_text">Input Station Name</string>
+    <string name="app_name">StopsTimetable</string>
+    <string name="button_search">Sök</string>
+    <string name="hint_text">Skriv in Plats</string>
     <string name="action_time">Välj Tid</string>
+    <string name="time_information">Hållplats Information</string>
+    <string name="last_update">Senast Uppdaterad: </string>
+    <string name="dialog_title">Välj Tid</string>
 </resources>
