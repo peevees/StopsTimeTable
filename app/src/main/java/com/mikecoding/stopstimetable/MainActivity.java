@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
     ArrayList<Station> stations;
     ProgressBar progressBar;
     Toast toast;
+    TextView text_msg;
+    StationAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         list = (ListView) findViewById(R.id.scroll_list);
         inputText = (EditText) findViewById(R.id.input_text);
         progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
+        text_msg = (TextView) findViewById(R.id.main_error_text);
 
         String location = "södra";
         //här sätts url till ApiCaller(). key=%s = String API_KEY searchstring=%s = String location
@@ -50,10 +54,15 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         });
     }
     public void searchStations(View view){
-       url = createURL(inputText.getText().toString());
-        new ApiCaller(this).execute(url);
+        if (inputText.getText().toString().isEmpty()) {
+            displayToast(R.string.error_textfield_empty);
+        } else {
+            url = createURL(inputText.getText().toString());
+            new ApiCaller(this).execute(url);
+            inputText.setText("");
+        }
     }
-    private String createURL (String location){
+    private String createURL (String location) {
         String urlCreation;
         urlCreation = String.format("http://api.sl.se/api2/typeahead.json?key=%s&searchstring=%s&stationsonly=true", API_KEY, location);
         return urlCreation;
@@ -61,9 +70,19 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
 
     @Override
     public void onTaskComplete(ArrayList<Station> stations){
-        this.stations = stations;
-        StationAdapter adapter = new StationAdapter(this, R.layout.stationlistitem, stations);
-        list.setAdapter(adapter);
+        if (stations.isEmpty()) {
+            adapter.clear();
+            text_msg.setText(R.string.error_no_stations);
+            text_msg.setVisibility(View.VISIBLE);
+
+        } else {
+            if (text_msg.getVisibility() == View.VISIBLE) {
+                text_msg.setVisibility(View.GONE);
+            }
+            this.stations = stations;
+            adapter = new StationAdapter(this, R.layout.stationlistitem, stations);
+            list.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -76,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         progressBar.setVisibility(View.GONE);
     }
     @Override
-    public void displayToast(String msg) {
+    public void displayToast(int msg) {
         if (toast != null) {
             toast.cancel();
         }
