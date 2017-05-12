@@ -9,5 +9,5 @@ import java.util.ArrayList;
 public interface InformationInterface {
     void onTaskComplete(ArrayList<Information> informations);
     void hideProgressBar();
-    void displayToast(String msg);
+    void displayToast(int msg);
 }
