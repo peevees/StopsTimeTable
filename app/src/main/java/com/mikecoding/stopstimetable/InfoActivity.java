@@ -25,6 +25,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
