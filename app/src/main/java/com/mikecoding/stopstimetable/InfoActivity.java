@@ -1,5 +1,6 @@
 package com.mikecoding.stopstimetable;
 
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.support.v7.app.ActionBar;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -81,6 +83,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         switch(item.getItemId()){
             case R.id.action_time:
                 //user choose time show time dialog
+                showDialog();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -90,5 +93,14 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.dialog_title);
+        //builder.setMessage();//set station name?
+        final SeekBar timeInput = new SeekBar(this);
+        builder.setView(timeInput);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
     }
 }
