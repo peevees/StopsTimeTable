@@ -39,7 +39,7 @@
         android:background="@color/colorAccent"
         android:layout_below="@id/my_toolbar"
         android:weightSum="3">
-        
+
         <ImageButton
             android:id="@+id/icon_subway"
             android:layout_weight="1"
