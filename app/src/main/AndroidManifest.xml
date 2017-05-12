@@ -12,23 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity"
-            android:launchMode="singleTop">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".InfoActivity"
-            android:label="@string/time_information"
-            android:parentActivityName="com.mikecoding.stopstimetable.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mikecoding.stopstimetable.MainActivity">
-
-            </meta-data>
-        </activity>
+        <activity android:name=".InfoActivity"></activity>
     </application>
 
 </manifest>
