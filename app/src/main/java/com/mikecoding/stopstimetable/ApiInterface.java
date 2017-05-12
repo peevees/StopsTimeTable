@@ -6,5 +6,5 @@ public interface ApiInterface {
     void onTaskComplete(ArrayList<Station> stations);
     void showProgressBar();
     void hideProgressBar();
-    void displayToast(String msg);
+    void displayToast(int msg);
 }

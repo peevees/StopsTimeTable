@@ -8,9 +8,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by micste on 2017-05-10.
- */
 
 public class JSONHandler {
 
@@ -60,7 +57,7 @@ public class JSONHandler {
 
         } else {
             apiInterface.hideProgressBar();
-            apiInterface.displayToast("There is no internet connection available");
+            apiInterface.displayToast(R.string.error_no_internet);
         }
 
      }
@@ -147,7 +144,7 @@ public class JSONHandler {
 
         } else {
             informationInterface.hideProgressBar();
-            informationInterface.displayToast("There is no internet connection available");
+            informationInterface.displayToast(R.string.error_no_internet);
         }
     }
 

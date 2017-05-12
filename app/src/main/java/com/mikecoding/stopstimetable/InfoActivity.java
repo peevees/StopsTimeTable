@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     String siteId;
     String url;
     ProgressBar progressBar;
+    TextView textView_msg;
 
 
     @Override
@@ -43,6 +45,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
 
         //TODO Fixa så att användaren kan ange tidsram för sökning
         progressBar = (ProgressBar) findViewById(R.id.info_progressbar);
+        textView_msg = (TextView) findViewById(R.id.info_error_text);
         siteId = getIntent().getExtras().getString("ID");
         String url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=1", API_KEY, siteId);
         new ApiCaller(this).execute(url);
@@ -53,8 +56,13 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     @Override
     public void onTaskComplete(ArrayList<Information> informations) {
 
-        mAdapter = new InformationAdapter(this, R.layout.informationlistitem, informations);
-        lv_info.setAdapter(mAdapter);
+        if (informations.isEmpty()) {
+            textView_msg.setText(R.string.error_no_departures);
+            textView_msg.setVisibility(View.VISIBLE);
+        } else {
+            mAdapter = new InformationAdapter(this, R.layout.informationlistitem, informations);
+            lv_info.setAdapter(mAdapter);
+        }
     }
 
     @Override
@@ -62,7 +70,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         progressBar.setVisibility(View.GONE);
     }
     @Override
-    public void displayToast(String msg) {
+    public void displayToast(int msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
     @Override
