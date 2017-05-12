@@ -6,4 +6,5 @@
     <string name="error_no_stations">Hittade inga hållplatser</string>
     <string name="error_no_internet">Det finns inget nätverk. Kolla din internetuppkoppling</string>
     <string name="error_textfield_empty">Sökfältet är tomt</string>
+    <string name="action_time">Välj Tid</string>
 </resources>
