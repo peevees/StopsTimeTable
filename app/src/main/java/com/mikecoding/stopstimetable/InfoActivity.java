@@ -1,11 +1,18 @@
 package com.mikecoding.stopstimetable;
 
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -31,9 +38,10 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
         //TODO Fixa så att användaren kan ange tidsram för sökning
-        //TODO fixa informationslistitem xml lite
-        //TODO Fixa så att ett meddelande visas när man ej får fram någon realtidsinformation, om den ej innehåller någon data
         progressBar = (ProgressBar) findViewById(R.id.info_progressbar);
         textView_msg = (TextView) findViewById(R.id.info_error_text);
         siteId = getIntent().getExtras().getString("ID");
@@ -62,5 +70,25 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     @Override
     public void displayToast(int msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.action_time:
+                //user choose time show time dialog
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    private void showDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.dialog_title);
     }
 }

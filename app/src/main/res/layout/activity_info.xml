@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:layout_below="@id/my_toolbar"
-        android:text="Last updated: "/>
+        android:text="@string/last_update"/>
     <ListView
         android:id="@+id/listview_information"
         android:layout_width="match_parent"
