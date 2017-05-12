@@ -5,6 +5,17 @@
     android:layout_height="match_parent"
     tools:context="com.mikecoding.stopstimetable.InfoActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <!--
     <RelativeLayout
         android:id="@+id/stop_holder"
         android:layout_width="match_parent"
@@ -19,18 +30,19 @@
             android:text="DUMMY STOP"/>
 
     </RelativeLayout>
+    -->
     <TextView
         android:id="@+id/last_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:layout_above="@id/listview_information"
+        android:layout_below="@id/my_toolbar"
         android:text="Last updated: "/>
     <ListView
         android:id="@+id/listview_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/stop_holder">
+        android:layout_below="@id/last_update">
 
     </ListView>
     <ProgressBar

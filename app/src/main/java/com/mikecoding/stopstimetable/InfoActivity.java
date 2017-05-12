@@ -2,6 +2,7 @@ package com.mikecoding.stopstimetable;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,9 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+
         //TODO Fixa så att användaren kan ange tidsram för sökning
         //TODO fixa informationslistitem xml lite
         //TODO Fixa så att ett meddelande visas när man ej får fram någon realtidsinformation, om den ej innehåller någon data

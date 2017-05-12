@@ -2,5 +2,5 @@
     <string name="app_name">Stops Timetable</string>
     <string name="button_search">Search</string>
     <string name="hint_text">Input Station Name</string>
-
+    <string name="action_time">Välj Tid</string>
 </resources>
