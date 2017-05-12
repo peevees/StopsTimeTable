@@ -1,18 +1,9 @@
 <resources>
-    <string name="app_name">StopsTimetable</string>
+    <string name="app_name">Stops Timetable</string>
     <string name="button_search">Sök</string>
-    <string name="hint_text">Skriv in Plats</string>
-    <string name="action_time">Välj Tid</string>
-    <string name="time_information">Hållplats Information</string>
-    <string name="last_update">Senast Uppdaterad: </string>
-    <string name="dialog_title">Välj Tid</string>
+    <string name="hint_text">Ange en hållplats</string>
     <string name="error_no_departures">Det finns inga avgånger inom den angivna tidsramen</string>
     <string name="error_no_stations">Hittade inga hållplatser</string>
     <string name="error_no_internet">Det finns inget nätverk. Kolla din internetuppkoppling</string>
     <string name="error_textfield_empty">Sökfältet är tomt</string>
-    <string name="action_time">Välj Tid</string>
-    <string name="time_information">Hållplats Information</string>
-    <string name="last_update">Senast Uppdaterad: </string>
-    <string name="dialog_title">Välj Tid</string>
-    <string name="cancel">Avbryt</string>
 </resources>

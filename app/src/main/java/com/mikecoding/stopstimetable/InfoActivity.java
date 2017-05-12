@@ -1,29 +1,12 @@
 package com.mikecoding.stopstimetable;
 
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,34 +21,23 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     String url;
     ProgressBar progressBar;
     TextView textView_msg;
-    TextView timeText;
-    String time;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-
-        ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        //changed
         //TODO Fixa så att användaren kan ange tidsram för sökning
+        //TODO fixa informationslistitem xml lite
+        //TODO Fixa så att ett meddelande visas när man ej får fram någon realtidsinformation, om den ej innehåller någon data
         progressBar = (ProgressBar) findViewById(R.id.info_progressbar);
         textView_msg = (TextView) findViewById(R.id.info_error_text);
         siteId = getIntent().getExtras().getString("ID");
-        time = "5";
-        apiCalling();
-
+        String url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=1", API_KEY, siteId);
+        new ApiCaller(this).execute(url);
 
         lv_info = (ListView) findViewById(R.id.listview_information);
 
-    }
-    public void apiCalling(){
-        url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=%s", API_KEY, siteId, time);
-        new ApiCaller(this).execute(url);
     }
     @Override
     public void onTaskComplete(ArrayList<Information> informations) {
@@ -86,80 +58,5 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     @Override
     public void displayToast(int msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.action_time:
-                //user choose time show time dialog
-                showDialog();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    private void showDialog(){
-        View view = View.inflate(this, R.layout.time_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(view);
-        builder.setTitle(R.string.dialog_title);
-
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //do something with input
-                time = timeText.getText().toString();
-                apiCalling();
-            }
-        });
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-               dialog.cancel();
-            }
-        });
-        builder.show();
-        timeText = (TextView) view.findViewById(R.id.time_text);
-        final SeekBar timeInput = (SeekBar) view.findViewById(R.id.time_input);
-        timeInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                switch(progress){
-                    case 0:
-                        timeText.setText("5");
-                        break;
-                    case 1:
-                        timeText.setText("10");
-                        break;
-                    case 2:
-                        timeText.setText("15");
-                        break;
-                    case 3:
-                        timeText.setText("20");
-                        break;
-                    case 4:
-                        timeText.setText("25");
-                        break;
-                    case 5:
-                        timeText.setText("30");
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
     }
 }
