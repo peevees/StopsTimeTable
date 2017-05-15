@@ -8,17 +8,23 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -32,6 +38,8 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     String url;
     ProgressBar progressBar;
     TextView textView_msg;
+    TextView timeText;
+    String time;
 
 
     @Override
@@ -48,11 +56,16 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         progressBar = (ProgressBar) findViewById(R.id.info_progressbar);
         textView_msg = (TextView) findViewById(R.id.info_error_text);
         siteId = getIntent().getExtras().getString("ID");
-        String url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=1", API_KEY, siteId);
-        new ApiCaller(this).execute(url);
+        time = "5";
+        apiCalling();
+
 
         lv_info = (ListView) findViewById(R.id.listview_information);
 
+    }
+    public void apiCalling(){
+        url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=%s", API_KEY, siteId, time);
+        new ApiCaller(this).execute(url);
     }
     @Override
     public void onTaskComplete(ArrayList<Information> informations) {
@@ -91,15 +104,60 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         }
     }
     private void showDialog(){
-
+        View view = View.inflate(this, R.layout.time_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(view);
         builder.setTitle(R.string.dialog_title);
-        //builder.setMessage();//set station name?
-        final SeekBar timeInput = new SeekBar(this);
-        builder.setView(timeInput);
+
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //do something with input
+                time = timeText.getText().toString();
+                apiCalling();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               dialog.cancel();
+            }
+        });
+        builder.show();
+        timeText = (TextView) view.findViewById(R.id.time_text);
+        final SeekBar timeInput = (SeekBar) view.findViewById(R.id.time_input);
+        timeInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+                switch(progress){
+                    case 0:
+                        timeText.setText("5");
+                        break;
+                    case 1:
+                        timeText.setText("10");
+                        break;
+                    case 2:
+                        timeText.setText("15");
+                        break;
+                    case 3:
+                        timeText.setText("20");
+                        break;
+                    case 4:
+                        timeText.setText("25");
+                        break;
+                    case 5:
+                        timeText.setText("30");
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
