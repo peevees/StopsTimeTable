@@ -52,7 +52,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-
+        //test
         //TODO Fixa så att användaren kan ange tidsram för sökning
         progressBar = (ProgressBar) findViewById(R.id.info_progressbar);
         textView_msg = (TextView) findViewById(R.id.info_error_text);
