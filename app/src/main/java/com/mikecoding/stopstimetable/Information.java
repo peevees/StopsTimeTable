@@ -1,7 +1,5 @@
 package com.mikecoding.stopstimetable;
 
-//Ej färdigt
-
 public class Information {
 
     private String groupOfLine;

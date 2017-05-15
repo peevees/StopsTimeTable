@@ -31,34 +31,87 @@
 
     </RelativeLayout>
     -->
+    <LinearLayout
+        android:id="@+id/category_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorAccent"
+        android:layout_below="@id/my_toolbar"
+        android:weightSum="3">
+        
+        <ImageButton
+            android:id="@+id/icon_subway"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:onClick="showSubway"
+            android:background="@null"
+            android:src="@drawable/ic_action_time"
+            android:layout_height="50dp" />
+
+        <ImageButton
+            android:id="@+id/icon_train"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:onClick="showTrains"
+            android:background="@null"
+            android:src="@drawable/ic_action_time"
+            android:layout_height="50dp" />
+        <ImageButton
+            android:id="@+id/icon_bus"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:onClick="showBuses"
+            android:background="@null"
+            android:src="@drawable/ic_action_time"
+            android:layout_height="50dp" />
+
+    </LinearLayout>
     <TextView
         android:id="@+id/last_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:layout_below="@id/my_toolbar"
+        android:layout_below="@id/category_navigation"
         android:text="@string/last_update"/>
     <ListView
-        android:id="@+id/listview_information"
+        android:id="@+id/listview_subway"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/last_update">
 
     </ListView>
-    <ProgressBar
-        android:id="@+id/info_progressbar"
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listview_trains"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="visible"/>
+        android:layout_below="@id/last_update"
+        android:visibility="gone">
+
+    </ListView>
+    <ListView
+        android:id="@+id/listview_buses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/last_update"
+        android:visibility="gone">
+
+    </ListView>
     <TextView
         android:id="@+id/info_error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textAlignment="center"
+        android:text="@string/error_no_departures"
         android:textSize="18sp"
         android:visibility="gone"
         android:padding="10dp"/>
+    <ProgressBar
+        android:id="@+id/info_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"/>
 
 </RelativeLayout>

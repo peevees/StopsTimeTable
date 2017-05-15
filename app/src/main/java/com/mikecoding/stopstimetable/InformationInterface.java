@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 
 public interface InformationInterface {
-    void onTaskComplete(ArrayList<Information> informations);
+    void onTaskComplete(ArrayList<Information> subwayInfo, ArrayList<Information> trainInfo, ArrayList<Information> busInfo);
     void hideProgressBar();
     void displayToast(int msg);
 }
