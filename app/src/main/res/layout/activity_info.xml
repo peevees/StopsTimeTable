@@ -15,7 +15,7 @@
         android:background="@color/colorPrimary"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-
+  
     <LinearLayout
         android:id="@+id/category_navigation"
         android:layout_width="match_parent"
@@ -74,7 +74,6 @@
         android:layout_below="@id/last_update"
         android:listSelector="@android:color/transparent"
         android:visibility="gone">
-
     </ListView>
     <ListView
         android:id="@+id/listview_buses"
@@ -101,5 +100,13 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone"/>
-
+    <TextView
+        android:id="@+id/info_error_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:padding="10dp"/>
 </RelativeLayout>
