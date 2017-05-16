@@ -61,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements ApiInterface {
         if (inputText.getText().toString().isEmpty()) {
             displayToast(R.string.error_textfield_empty);
         } else {
+            if (adapter != null) {
+                adapter.clear();
+            }
             url = createURL(inputText.getText().toString());
             new ApiCaller(this).execute(url);
             inputText.setText("");

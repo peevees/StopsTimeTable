@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,14 @@ public class InformationAdapter extends ArrayAdapter<Information> {
         }
 
         Information information = informations.get(position);
-        vh.info.setText(information.getDisplayTime() + ", " + information.getGroupOfLine() + " " + information.getLineNumber() + " mot " +
-        information.getDestination());
+
+        if (information.getEmptyMessage() != 0) {
+            vh.info.setText(information.getEmptyMessage());
+
+        } else {
+            vh.info.setText(information.getDisplayTime() + ", " + information.getGroupOfLine() + " " + information.getLineNumber() + " mot " +
+                    information.getDestination());
+        }
 
         return row;
 

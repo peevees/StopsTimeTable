@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public interface InformationInterface {
     void onTaskComplete(ArrayList<Information> subwayInfo, ArrayList<Information> trainInfo, ArrayList<Information> busInfo);
+    void showProgressBar();
     void hideProgressBar();
     void displayToast(int msg);
+    void lastUpdate(String time);
 }

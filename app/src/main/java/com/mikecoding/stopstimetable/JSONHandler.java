@@ -20,6 +20,7 @@ public class JSONHandler {
     private ArrayList<Information> subwayInfo, busInfo, trainInfo;
     private Station station;
     private Information information;
+    private String lastUpdate;
 
     public JSONHandler(ApiInterface context, JSONObject json) {
         this.json = json;
@@ -81,6 +82,9 @@ public class JSONHandler {
                 JSONArray jBusesArray = object.getJSONArray("Buses");
                 JSONArray jTrainsArray = object.getJSONArray("Trains");
 
+                String updateTime = object.getString("LatestUpdate");
+                lastUpdate = updateTime.substring(updateTime.indexOf("T") + 1);
+
                 //Handle Metros
                 if (jMetrosArray != null) {
 
@@ -131,10 +135,26 @@ public class JSONHandler {
 
                 }
 
+                if (subwayInfo.isEmpty()) {
+                    information = new Information();
+                    information.setEmptyMessage(R.string.error_no_departures);
+                    subwayInfo.add(information);
+                }
+                if (trainInfo.isEmpty()) {
+                    information = new Information();
+                    information.setEmptyMessage(R.string.error_no_departures);
+                    trainInfo.add(information);
+                }
+                if (busInfo.isEmpty()) {
+                    information = new Information();
+                    information.setEmptyMessage(R.string.error_no_departures);
+                    busInfo.add(information);
+                }
                 //Sort arraylist by variable displayTime in desc order
 
                 informationInterface.hideProgressBar();
                 informationInterface.onTaskComplete(subwayInfo, trainInfo, busInfo);
+                informationInterface.lastUpdate(lastUpdate);
 
             } catch (JSONException e) {
                 e.printStackTrace();

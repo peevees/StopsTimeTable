@@ -21,55 +21,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimary"
         android:layout_below="@id/my_toolbar"
         android:weightSum="3">
 
         <ImageButton
-            android:id="@+id/icon_subway"
+            android:id="@+id/btn_subway"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:onClick="showSubway"
-            android:background="@null"
-            android:src="@drawable/ic_action_time"
-            android:layout_height="50dp" />
+            android:onClick="toggleView"
+            android:background="@color/colorLightBlue"
+            android:src="@drawable/ic_action_subway"
+            android:layout_height="60dp" />
 
         <ImageButton
-            android:id="@+id/icon_train"
-            android:layout_weight="1"
+            android:id="@+id/btn_train"
             android:layout_width="0dp"
-            android:onClick="showTrains"
+            android:layout_height="60dp"
+            android:layout_weight="1"
             android:background="@null"
-            android:src="@drawable/ic_action_time"
-            android:layout_height="50dp" />
+            android:onClick="toggleView"
+            android:src="@drawable/ic_action_train" />
+
         <ImageButton
-            android:id="@+id/icon_bus"
+            android:id="@+id/btn_bus"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:onClick="showBuses"
+            android:onClick="toggleView"
             android:background="@null"
-            android:src="@drawable/ic_action_time"
-            android:layout_height="50dp" />
+            android:src="@drawable/ic_action_bus"
+            android:layout_height="60dp" />
 
     </LinearLayout>
     <TextView
         android:id="@+id/last_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_below="@id/category_navigation"
-        android:text="@string/last_update"/>
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:layout_below="@id/category_navigation" />
     <ListView
         android:id="@+id/listview_subway"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/last_update">
+        android:layout_below="@id/last_update"
+        android:listSelector="@android:color/transparent">
     </ListView>
     <ListView
         android:id="@+id/listview_trains"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/last_update"
+        android:listSelector="@android:color/transparent"
         android:visibility="gone">
 
     </ListView>
@@ -78,6 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/last_update"
+        android:listSelector="@android:color/transparent"
         android:visibility="gone">
 
     </ListView>
@@ -96,6 +100,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 </RelativeLayout>
