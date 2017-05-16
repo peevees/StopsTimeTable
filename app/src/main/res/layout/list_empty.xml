@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:id="@+id/text_list_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/error_no_departures"
+    android:textAlignment="center"
+    android:textSize="18sp"
+    android:padding="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
+

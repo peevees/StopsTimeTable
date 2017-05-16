@@ -34,6 +34,9 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
         if (apiInterface != null) {
             apiInterface.showProgressBar();
         }
+        if (informationInterface !=null ) {
+            informationInterface.showProgressBar();
+        }
 
     }
 

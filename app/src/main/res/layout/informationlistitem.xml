@@ -4,6 +4,6 @@
     android:id="@+id/tv_info"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:padding="10dp"
     android:textSize="16sp">
     </TextView>

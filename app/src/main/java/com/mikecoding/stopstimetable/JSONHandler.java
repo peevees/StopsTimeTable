@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class JSONHandler {
@@ -15,9 +17,10 @@ public class JSONHandler {
     private ApiInterface apiInterface;
     private InformationInterface informationInterface;
     private ArrayList<Station> stationList;
-    private ArrayList<Information> informationList;
+    private ArrayList<Information> subwayInfo, busInfo, trainInfo;
     private Station station;
     private Information information;
+    private String lastUpdate;
 
     public JSONHandler(ApiInterface context, JSONObject json) {
         this.json = json;
@@ -68,7 +71,9 @@ public class JSONHandler {
 
         if (json != null) {
 
-            informationList = new ArrayList<>();
+            subwayInfo = new ArrayList<>();
+            trainInfo = new ArrayList<>();
+            busInfo = new ArrayList<>();
 
             try {
 
@@ -76,6 +81,9 @@ public class JSONHandler {
                 JSONArray jMetrosArray = object.getJSONArray("Metros");
                 JSONArray jBusesArray = object.getJSONArray("Buses");
                 JSONArray jTrainsArray = object.getJSONArray("Trains");
+
+                String updateTime = object.getString("LatestUpdate");
+                lastUpdate = updateTime.substring(updateTime.indexOf("T") + 1);
 
                 //Handle Metros
                 if (jMetrosArray != null) {
@@ -87,7 +95,7 @@ public class JSONHandler {
                         information.setLineNumber(jMetrosArray.getJSONObject(i).getString("LineNumber"));
                         information.setTransportMode(jMetrosArray.getJSONObject(i).getString("TransportMode"));
                         information.setDestination(jMetrosArray.getJSONObject(i).getString("Destination"));
-                        informationList.add(information);
+                        subwayInfo.add(information);
                     }
 
                 }
@@ -106,7 +114,7 @@ public class JSONHandler {
                         information.setLineNumber(jBusesArray.getJSONObject(i).getString("LineNumber"));
                         information.setTransportMode(jBusesArray.getJSONObject(i).getString("TransportMode"));
                         information.setDestination(jBusesArray.getJSONObject(i).getString("Destination"));
-                        informationList.add(information);
+                        busInfo.add(information);
                     }
 
                 }
@@ -122,21 +130,31 @@ public class JSONHandler {
                         information.setLineNumber(jTrainsArray.getJSONObject(i).getString("LineNumber"));
                         information.setTransportMode(jTrainsArray.getJSONObject(i).getString("TransportMode"));
                         information.setDestination(jTrainsArray.getJSONObject(i).getString("Destination"));
-                        informationList.add(information);
+                        trainInfo.add(information);
                     }
 
                 }
 
-                informationInterface.hideProgressBar();
-                informationInterface.onTaskComplete(informationList);
-
-                //Logg output JSON Datan vi fått in
-                for (int i = 0; i < informationList.size(); i++) {
-                    Log.d("Realtidsinformation: ", "" + informationList.get(i).getDisplayTime()
-                            + ", " + informationList.get(i).getGroupOfLine() + " " + informationList.get(i).getLineNumber()
-                            + " mot " + informationList.get(i).getDestination());
+                if (subwayInfo.isEmpty()) {
+                    information = new Information();
+                    information.setEmptyMessage(R.string.error_no_departures);
+                    subwayInfo.add(information);
                 }
+                if (trainInfo.isEmpty()) {
+                    information = new Information();
+                    information.setEmptyMessage(R.string.error_no_departures);
+                    trainInfo.add(information);
+                }
+                if (busInfo.isEmpty()) {
+                    information = new Information();
+                    information.setEmptyMessage(R.string.error_no_departures);
+                    busInfo.add(information);
+                }
+                //Sort arraylist by variable displayTime in desc order
 
+                informationInterface.hideProgressBar();
+                informationInterface.onTaskComplete(subwayInfo, trainInfo, busInfo);
+                informationInterface.lastUpdate(lastUpdate);
 
             } catch (JSONException e) {
                 e.printStackTrace();

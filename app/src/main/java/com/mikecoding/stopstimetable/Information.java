@@ -1,7 +1,5 @@
 package com.mikecoding.stopstimetable;
 
-//Ej färdigt
-
 public class Information {
 
     private String groupOfLine;
@@ -9,6 +7,7 @@ public class Information {
     private String transportMode;
     private String lineNumber;
     private String destination;
+    private int emptyMessage = 0;
 
     public Information() {
 
@@ -53,5 +52,13 @@ public class Information {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public int getEmptyMessage() {
+        return emptyMessage;
+    }
+
+    public void setEmptyMessage(int emptyMessage) {
+        this.emptyMessage = emptyMessage;
     }
 }

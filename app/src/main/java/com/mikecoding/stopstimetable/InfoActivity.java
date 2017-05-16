@@ -1,8 +1,8 @@
 package com.mikecoding.stopstimetable;
 
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +15,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,19 +29,23 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class InfoActivity extends AppCompatActivity implements InformationInterface{
 
     private static final String API_KEY = "2bf817b6d911437790124c982f80df7b";
-    ListView lv_info;
-    ArrayAdapter mAdapter;
+    ListView list_subway, list_trains, list_buses;
+    ArrayAdapter subwayAdapter, trainAdapter, busAdapter;
     String siteId;
     String url;
     ProgressBar progressBar;
-    TextView textView_msg;
-    TextView timeText;
+    TextView textView_msg, timeText, lastUpdateText;
+    ImageButton buttonSubway, buttonTrain, buttonBus;
     String time;
+    int btnColorActive, btnColorDefault;
 
 
     @Override
@@ -52,37 +57,54 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        //test
-        //TODO Fixa så att användaren kan ange tidsram för sökning
+
+        btnColorActive = ContextCompat.getColor(this, R.color.colorLightBlue);
+        btnColorDefault = ContextCompat.getColor(this, R.color.colorPrimary);
         progressBar = (ProgressBar) findViewById(R.id.info_progressbar);
         textView_msg = (TextView) findViewById(R.id.info_error_text);
+        lastUpdateText = (TextView) findViewById(R.id.last_update);
+        buttonSubway = (ImageButton) findViewById(R.id.btn_subway);
+        buttonTrain = (ImageButton) findViewById(R.id.btn_train);
+        buttonBus = (ImageButton) findViewById(R.id.btn_bus);
         siteId = getIntent().getExtras().getString("ID");
         time = "5";
         apiCalling();
 
-
-        lv_info = (ListView) findViewById(R.id.listview_information);
+        list_subway = (ListView) findViewById(R.id.listview_subway);
+        list_trains = (ListView) findViewById(R.id.listview_trains);
+        list_buses = (ListView) findViewById(R.id.listview_buses);
 
     }
     public void apiCalling(){
+
         url = String.format("http://api.sl.se/api2/realtimedeparturesv4.json?key=%s&siteid=%s&timewindow=%s", API_KEY, siteId, time);
         new ApiCaller(this).execute(url);
     }
     @Override
-    public void onTaskComplete(ArrayList<Information> informations) {
+    public void onTaskComplete(ArrayList<Information> subwayInfo, ArrayList<Information> trainInfo,
+                               ArrayList<Information> busInfo) {
 
-        if (informations.isEmpty()) {
-            textView_msg.setText(R.string.error_no_departures);
-            textView_msg.setVisibility(View.VISIBLE);
-        } else {
-            mAdapter = new InformationAdapter(this, R.layout.informationlistitem, informations);
-            lv_info.setAdapter(mAdapter);
-        }
+        subwayAdapter = new InformationAdapter(this, R.layout.informationlistitem, subwayInfo);
+        list_subway.setAdapter(subwayAdapter);
+
+        trainAdapter = new InformationAdapter(this, R.layout.informationlistitem, trainInfo);
+        list_trains.setAdapter(trainAdapter);
+
+        busAdapter = new InformationAdapter(this, R.layout.informationlistitem, busInfo);
+        list_buses.setAdapter(busAdapter);
     }
 
     @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+    @Override
     public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
+    }
+    @Override
+    public void lastUpdate(String time) {
+        lastUpdateText.setText(getResources().getString(R.string.last_update) + time);
     }
     @Override
     public void displayToast(int msg) {
@@ -99,6 +121,9 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
             case R.id.action_time:
                 //user choose time show time dialog
                 showDialog();
+                return true;
+            case R.id.action_refresh:
+                apiCalling();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -127,10 +152,12 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         builder.show();
         timeText = (TextView) view.findViewById(R.id.time_text);
         final SeekBar timeInput = (SeekBar) view.findViewById(R.id.time_input);
+        //TODO Fixa så att tidsvärden sparas
         timeInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+                //TODO Fixa progress koden, 5+(progress*5)
                 switch(progress){
                     case 0:
                         timeText.setText("5");
@@ -163,4 +190,49 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
             }
         });
     }
+
+    public void toggleView(View view) {
+
+        switch (view.getId()) {
+            case R.id.btn_subway:
+                list_trains.setVisibility(View.GONE);
+                list_buses.setVisibility(View.GONE);
+                list_subway.setVisibility(View.VISIBLE);
+                buttonSubway.setBackgroundColor(btnColorActive);
+                buttonTrain.setBackgroundColor(btnColorDefault);
+                buttonBus.setBackgroundColor(btnColorDefault);
+                break;
+            case R.id.btn_train:
+                list_subway.setVisibility(View.GONE);
+                list_buses.setVisibility(View.GONE);
+                list_trains.setVisibility(View.VISIBLE);
+                buttonTrain.setBackgroundColor(btnColorActive);
+                buttonSubway.setBackgroundColor(btnColorDefault);
+                buttonBus.setBackgroundColor(btnColorDefault);
+                break;
+            case R.id.btn_bus:
+                list_trains.setVisibility(View.GONE);
+                list_subway.setVisibility(View.GONE);
+                list_buses.setVisibility(View.VISIBLE);
+                buttonBus.setBackgroundColor(btnColorActive);
+                buttonSubway.setBackgroundColor(btnColorDefault);
+                buttonTrain.setBackgroundColor(btnColorDefault);
+                break;
+        }
+
+    }
+
+    //Får se om denna tas bort 
+    public ArrayAdapter getAdapter() {
+        if (list_trains.getVisibility() == View.VISIBLE) {
+            return trainAdapter;
+        }
+        else if (list_buses.getVisibility() == View.VISIBLE) {
+            return busAdapter;
+        }
+        else {
+            return subwayAdapter;
+        }
+    }
+
 }
