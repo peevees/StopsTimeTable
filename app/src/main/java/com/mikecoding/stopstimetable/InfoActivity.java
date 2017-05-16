@@ -214,7 +214,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
 
     }
 
-    //Får se om denna tas bort
+    //Får se om denna tas bort 
     public ArrayAdapter getAdapter() {
         if (list_trains.getVisibility() == View.VISIBLE) {
             return trainAdapter;
