@@ -2,37 +2,22 @@ package com.mikecoding.stopstimetable;
 
 import android.content.DialogInterface;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class InfoActivity extends AppCompatActivity implements InformationInterface{
 
@@ -45,6 +30,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
     TextView textView_msg, timeText, lastUpdateText;
     ImageButton buttonSubway, buttonTrain, buttonBus;
     String time;
+    int progressNumber;
     int btnColorActive, btnColorDefault;
 
 
@@ -68,6 +54,7 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         buttonBus = (ImageButton) findViewById(R.id.btn_bus);
         siteId = getIntent().getExtras().getString("ID");
         time = "5";
+        progressNumber = Integer.parseInt(time)-5;
         apiCalling();
 
         list_subway = (ListView) findViewById(R.id.listview_subway);
@@ -152,31 +139,13 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         builder.show();
         timeText = (TextView) view.findViewById(R.id.time_text);
         final SeekBar timeInput = (SeekBar) view.findViewById(R.id.time_input);
-        //TODO Fixa så att tidsvärden sparas
+        timeInput.setProgress(progressNumber);
         timeInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-                //TODO Fixa progress koden, 5+(progress*5)
-                switch(progress){
-                    case 0:
-                        timeText.setText("5");
-                        break;
-                    case 1:
-                        timeText.setText("10");
-                        break;
-                    case 2:
-                        timeText.setText("15");
-                        break;
-                    case 3:
-                        timeText.setText("20");
-                        break;
-                    case 4:
-                        timeText.setText("25");
-                        break;
-                    case 5:
-                        timeText.setText("30");
-                }
+                //sets the TextView that displays time to progressbar input with
+                // an increment of 5 for each step
+                timeText.setText(String.valueOf(5 + (progress * 5)));
             }
 
             @Override
@@ -220,19 +189,6 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
                 break;
         }
 
-    }
-
-    //Får se om denna tas bort 
-    public ArrayAdapter getAdapter() {
-        if (list_trains.getVisibility() == View.VISIBLE) {
-            return trainAdapter;
-        }
-        else if (list_buses.getVisibility() == View.VISIBLE) {
-            return busAdapter;
-        }
-        else {
-            return subwayAdapter;
-        }
     }
 
 }

@@ -12,4 +12,9 @@
     <string name="last_update">Senast Uppdaterad:\u0020</string>
     <string name="dialog_title">Välj Tid</string>
     <string name="cancel">Avbryt</string>
+
+    <string name="contentdescribe_metro">Tunnelbana</string>
+    <string name="contentdescribe_train">Pendeltåg</string>
+    <string name="contentdescribe_bus">Buss</string>
+
 </resources>
