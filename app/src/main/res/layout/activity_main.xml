@@ -18,40 +18,36 @@
         android:elevation="4dp"/>
 
     <LinearLayout
-        android:id="@+id/top_center"
+        android:id="@+id/search_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/my_toolbar"/>
-    <EditText
-        android:id="@+id/input_text"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_toLeftOf="@id/top_center"
-        android:layout_toStartOf="@id/top_center"
-        android:layout_below="@id/my_toolbar"
-        android:inputType="text"
-        android:hint="@string/hint_text"/>
-    <Button
-        android:id="@+id/search_stops"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/button_search"
-        android:layout_toRightOf="@id/input_text"
-        android:layout_toEndOf="@id/input_text"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:onClick="searchStations"
-        android:layout_below="@id/my_toolbar"/>
+        android:orientation="horizontal"
+        android:layout_below="@id/my_toolbar">
+
+        <AutoCompleteTextView
+            android:id="@+id/input_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:inputType="text"
+            android:hint="@string/hint_text"/>
+        <Button
+            android:id="@+id/search_stops"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_search"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="30dp"
+            android:onClick="searchStations" />
+
+    </LinearLayout>
     <ListView
         android:id="@+id/scroll_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/search_stops"
+        android:layout_below="@id/search_container"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:paddingRight="5dp"
