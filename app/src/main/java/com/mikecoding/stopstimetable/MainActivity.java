@@ -57,7 +57,11 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
     public void searchStations(View view){
         if (inputText.getText().toString().isEmpty()) {
             displayToast(R.string.error_textfield_empty);
-        } else {
+        }
+        else if (inputText.getText().toString().length() > 50) {
+            displayToast(R.string.error_textfield_length);
+        }
+        else {
             if (adapter != null) {
                 adapter.clear();
             }

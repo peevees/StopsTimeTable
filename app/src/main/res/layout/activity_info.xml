@@ -15,43 +15,61 @@
         android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-  
+
+    <LinearLayout
+        android:id="@+id/separator"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_below="@id/my_toolbar"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimaryLighter">
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/category_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/colorPrimary"
-        android:layout_below="@id/my_toolbar"
+        android:layout_below="@id/separator"
         android:weightSum="3">
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_subway"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:onClick="toggleView"
             android:background="@color/colorLightBlue"
-            android:src="@drawable/ic_action_subway"
             android:layout_height="60dp"
+            android:drawableTop="@drawable/ic_action_subway"
+            android:text="@string/contentdescribe_metro"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
             android:contentDescription="@string/contentdescribe_metro"/>
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_train"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
             android:background="@null"
             android:onClick="toggleView"
-            android:src="@drawable/ic_action_train"
+            android:drawableTop="@drawable/ic_action_train"
+            android:text="@string/contentdescribe_train"
+            android:textSize="12dp"
+            android:textColor="@color/colorWhite"
             android:contentDescription="@string/contentdescribe_train"/>
 
-        <ImageButton
+        <Button
             android:id="@+id/btn_bus"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:onClick="toggleView"
             android:background="@null"
-            android:src="@drawable/ic_action_bus"
+            android:drawableTop="@drawable/ic_action_bus"
+            android:text="@string/contentdescribe_bus"
+            android:textSize="12dp"
+            android:textColor="@color/colorWhite"
             android:layout_height="60dp"
             android:contentDescription="@string/contentdescribe_bus"/>
 
