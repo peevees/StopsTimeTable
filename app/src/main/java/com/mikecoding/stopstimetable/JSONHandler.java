@@ -1,20 +1,16 @@
 package com.mikecoding.stopstimetable;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 
 public class JSONHandler {
 
     private JSONObject json;
-    private ApiInterface apiInterface;
+    private StationInterface stationInterface;
     private InformationInterface informationInterface;
     private ArrayList<Station> stationList;
     private ArrayList<Information> subwayInfo, busInfo, trainInfo;
@@ -22,9 +18,9 @@ public class JSONHandler {
     private Information information;
     private String lastUpdate;
 
-    public JSONHandler(ApiInterface context, JSONObject json) {
+    public JSONHandler(StationInterface context, JSONObject json) {
         this.json = json;
-        this.apiInterface = context;
+        this.stationInterface = context;
     }
     public JSONHandler(InformationInterface context, JSONObject json) {
         this.json = json;
@@ -33,41 +29,36 @@ public class JSONHandler {
 
     public void parseStations() {
 
-        //Hantering för API Hållplatser
-        //Skapar station objekt av JSON datan och sätter in dessa i en ArrayList
+        //Handle for the Plac api
+        //Creates a Station Object from the Json data and puts them in an Arraylist
         if (json != null) {
-
-            stationList = new ArrayList<>();
-
+             stationList = new ArrayList<>();
             try {
                 JSONArray jArray = json.getJSONArray("ResponseData");
-
                 for (int i = 0; i < jArray.length(); i++) {
-
                     station = new Station();
                     station.setName(jArray.getJSONObject(i).getString("Name"));
                     station.setSiteID(jArray.getJSONObject(i).getString("SiteId"));
                     stationList.add(station);
-
-                    Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
+                    //Log.d("Station", "Name: " + station.getName() + " ID: " + station.getSiteID());
                 }
-                apiInterface.hideProgressBar();
-                apiInterface.onTaskComplete(stationList);
+                stationInterface.hideProgressBar();
+                stationInterface.onTaskComplete(stationList);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
         } else {
-            apiInterface.hideProgressBar();
-            apiInterface.displayToast(R.string.error_no_internet);
+            stationInterface.hideProgressBar();
+            stationInterface.displayToast(R.string.error_no_internet);
         }
 
      }
 
     public void parseInformation() {
 
-        //Hantering för API 2 Realtidsinformation
+        //Handle for the RealtimeInformation API
 
         if (json != null) {
 
@@ -81,7 +72,6 @@ public class JSONHandler {
                 JSONArray jMetrosArray = object.getJSONArray("Metros");
                 JSONArray jBusesArray = object.getJSONArray("Buses");
                 JSONArray jTrainsArray = object.getJSONArray("Trains");
-
                 String updateTime = object.getString("LatestUpdate");
                 lastUpdate = updateTime.substring(updateTime.indexOf("T") + 1);
 
@@ -167,7 +157,3 @@ public class JSONHandler {
     }
 
 }
-
-
-
-
