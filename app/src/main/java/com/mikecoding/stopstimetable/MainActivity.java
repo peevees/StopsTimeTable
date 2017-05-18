@@ -1,6 +1,8 @@
 package com.mikecoding.stopstimetable;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +25,14 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
 
     ListView list;
     EditText inputText;
-    String url;
+    String url, location;
     ArrayList<Station> stations;
     ProgressBar progressBar;
     Toast toast;
-    TextView text_msg;
+    TextView text_msg, text_last_search;
     StationAdapter adapter;
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -41,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
         inputText = (EditText) findViewById(R.id.input_text);
         progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
         text_msg = (TextView) findViewById(R.id.main_error_text);
+        text_last_search = (TextView) findViewById(R.id.lastsearch);
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        getLastResult();
         //här sätts url till ApiCaller(). key=%s = String API_KEY searchstring=%s = String location
         //Api URL:
         // "http://api.sl.se/api2/realtimedeparturesv4.json?key=2bf817b6d911437790124c982f80df7b&siteid=9001&timewindow=5";
@@ -55,16 +64,20 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
         });
     }
     public void searchStations(View view){
-        if (inputText.getText().toString().isEmpty()) {
+        if (inputText.getText().toString().trim().isEmpty()) {
             displayToast(R.string.error_textfield_empty);
         }
         else {
             if (adapter != null) {
                 adapter.clear();
             }
-            url = createURL(inputText.getText().toString());
+            location = inputText.getText().toString().trim();
+            editor.putString(getString(R.string.last_result), location);
+            editor.apply();
+            url = createURL(location);
             new ApiCaller(this).execute(url);
             inputText.setText("");
+            getLastResult();
         }
     }
     private String createURL (String location) {
@@ -108,5 +121,16 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
         }
         toast = Toast.makeText(this, msg, Toast.LENGTH_LONG);
         toast.show();
+    }
+    public void getLastResult() {
+        if (sharedPref.contains(getString(R.string.last_result))) {
+            text_last_search.setText(sharedPref.getString(getString(R.string.last_result), ""));
+        }
+    }
+    public void doLastSearch(View view) {
+        if (!text_last_search.getText().toString().isEmpty()) {
+            url = createURL(text_last_search.getText().toString());
+            new ApiCaller(this).execute(url);
+        }
     }
 }

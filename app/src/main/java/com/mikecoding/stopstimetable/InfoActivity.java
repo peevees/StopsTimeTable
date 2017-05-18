@@ -127,7 +127,6 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //do something with input
-                time = timeText.getText().toString();
                 apiCalling();
             }
         });
@@ -141,12 +140,15 @@ public class InfoActivity extends AppCompatActivity implements InformationInterf
         timeText = (TextView) view.findViewById(R.id.time_text);
         final SeekBar timeInput = (SeekBar) view.findViewById(R.id.time_input);
         timeInput.setProgress(progressNumber);
+        timeText.setText(time);
         timeInput.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //sets the TextView that displays time to progressbar input with
                 // an increment of 5 for each step
-                timeText.setText(String.valueOf(5 + (progress * 5)));
+                progressNumber = progress;
+                time = String.valueOf(5 + (progress * 5));
+                timeText.setText(time);
             }
 
             @Override

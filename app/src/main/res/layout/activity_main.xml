@@ -48,11 +48,36 @@
         android:layout_marginTop="30dp"
         android:onClick="searchStations"
         android:layout_below="@id/my_toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/last_search_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:onClick="doLastSearch"
+        android:layout_below="@id/input_text"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lastresult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:text="@string/last_result"/>
+        <TextView
+            android:id="@+id/lastsearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp"
+            android:clickable="true" />
+    </LinearLayout>
     <ListView
         android:id="@+id/scroll_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/search_stops"
+        android:layout_below="@id/last_search_holder"
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:paddingRight="5dp"
