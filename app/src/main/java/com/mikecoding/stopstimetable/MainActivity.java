@@ -58,9 +58,6 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
         if (inputText.getText().toString().isEmpty()) {
             displayToast(R.string.error_textfield_empty);
         }
-        else if (inputText.getText().toString().length() > 50) {
-            displayToast(R.string.error_textfield_length);
-        }
         else {
             if (adapter != null) {
                 adapter.clear();
@@ -79,7 +76,9 @@ public class MainActivity extends AppCompatActivity implements StationInterface 
     @Override
     public void onTaskComplete(ArrayList<Station> stations){
         if (stations.isEmpty()) {
-            adapter.clear();
+            if (adapter != null) {
+                adapter.clear();
+            }
             text_msg.setText(R.string.error_no_stations);
             text_msg.setVisibility(View.VISIBLE);
 
