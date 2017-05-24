@@ -49,8 +49,8 @@ public class ApiCaller extends AsyncTask<String, Void, JSONObject>{
         try {
             url = new URL(strings[0]);
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setConnectTimeout(3000);
-            urlConnection.setReadTimeout(3000);
+            urlConnection.setConnectTimeout(5000);
+            urlConnection.setReadTimeout(5000);
             int responseCode = urlConnection.getResponseCode();
             if(responseCode == HttpURLConnection.HTTP_OK){
                 server_response = readStream(urlConnection.getInputStream());
