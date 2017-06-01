@@ -34,7 +34,7 @@
         android:layout_toLeftOf="@id/top_center"
         android:layout_toStartOf="@id/top_center"
         android:layout_below="@id/my_toolbar"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ0123456789 "
         android:hint="@string/hint_text"/>
     <Button
         android:id="@+id/search_stops"
